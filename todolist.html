@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="todolist.css" />
+  </head>
+  <body>
+    <div class="todo-container">
+      <div class="input-container">
+        <input type="text" id="name" placeholder="Name" />
+        <button onclick="addName()">Add</button>
+      </div>
+      <div class="list-container">
+        <ul id="list"></ul>
+      </div>
+    </div>
+
+    <script>
+      let name = document.getElementById("name");
+      let dataList = JSON.parse(localStorage.getItem("dataList")) || [];
+
+      function addName() {
+        if (name.value == "") return alert("กรุณากรอกชื่อ");
+        dataList.push(name.value);
+        localStorage.setItem("dataList", JSON.stringify(dataList));
+        displayList();
+      }
+
+      let list = document.getElementById("list");
+      function displayList() {
+        list.innerHTML = "";
+        for (let i = 0; i < dataList.length; i++) {
+          list.innerHTML += `
+          <div class="list-item">
+          <labele>${dataList[i]}</labele> 
+          <button class="delete-btn" onclick="deleteName(${i})">Delete</button><br>
+          </div>`;
+        }
+      }
+
+      function deleteName(i) {
+        dataList.splice(i, 1);
+        localStorage.setItem("dataList", JSON.stringify(dataList));
+        displayList();
+      }
+      addEventListener("load", displayList);
+    </script>
+  </body>
+</html>
